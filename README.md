@@ -11,4 +11,4 @@ To view past sessions or to continue working on them:
 ## Katas
 
 ### Number Names
-- practiceId: `GGgr50` (January 19, 2022)
+- practiceId: `GGgr50`
