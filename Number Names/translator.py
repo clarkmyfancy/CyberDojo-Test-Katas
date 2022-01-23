@@ -21,6 +21,7 @@ class Translator:
             result = "zero"
             return result
 
+        original_number = number
         iteration = 0
         # segment = self.get_segment(number, iteration)
         current_number = self.get_segment(which_segment=iteration, number=number)
@@ -29,8 +30,18 @@ class Translator:
         current_magnitude_suffix = self.get_current_magnitude_suffix(number)
         self.result += " " + current_magnitude_suffix if current_magnitude_suffix != "" else ""
 
-        # while self.there_are_commas_remaining(number):
-        #     self.result += self.get_appropriot_suffix()
+        number /= 1000
+        iteration += 1
+
+        while int(number) > 0 :
+            current_number = self.get_segment(which_segment=iteration, number=original_number)
+            current_segment = self.translate_segment(current_number)
+            self.result += " " + current_segment if current_segment != "" else ""
+            current_magnitude_suffix = self.get_current_magnitude_suffix(number)
+            self.result += " " + current_magnitude_suffix if (current_magnitude_suffix != "") and (current_segment != "") else ""
+
+            number /= 1000
+            iteration += 1
 
         #     self.result += ""
         return self.result
@@ -38,7 +49,11 @@ class Translator:
     def translate_segment(self, number):
         result = ""
 
-        if Helpers().number_of_digits(number) == 3:
+        if number == 0:
+            result += ""
+            return result
+        
+        elif Helpers().number_of_digits(number) == 3:
             result += self.translate_three_digits(number)
         
         elif Helpers().number_of_digits(number) == 2:
@@ -178,4 +193,6 @@ class Translator:
             result += self.translate_teens(number)
         elif Helpers().number_of_digits(number) == 2:
             result += self.translate_last_two_digits(number)
+        else:
+            result += self.translate_single_digit(number)
         return result
