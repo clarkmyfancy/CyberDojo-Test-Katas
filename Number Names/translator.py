@@ -1,26 +1,77 @@
+import math
+
 from translator_helpers import Helpers
 
 class Translator:
 
+    result = ""
+
+    segment_suffixes = [
+        "",
+        "thousand",
+        "million",
+        "billion",
+        "trillion",
+        "quadrillion"
+    ]
+
     def translate(self, number):
-        result = ""
-        
+
         if number == 0:
             result = "zero"
+            return result
+
+        iteration = 0
+        # segment = self.get_segment(number, iteration)
+        current_number = self.get_segment(which_segment=iteration, number=number)
+        self.result += self.translate_segment(current_number)
+
+        current_magnitude_suffix = self.get_current_magnitude_suffix(number)
+        self.result += " " + current_magnitude_suffix if current_magnitude_suffix != "" else ""
+
+        # while self.there_are_commas_remaining(number):
+        #     self.result += self.get_appropriot_suffix()
+
+        #     self.result += ""
+        return self.result
+
+    def translate_segment(self, number):
+        result = ""
+
+        if Helpers().number_of_digits(number) == 3:
+            result += self.translate_three_digits(number)
+        
+        elif Helpers().number_of_digits(number) == 2:
+            result += self.translate_last_two_digits(number)
         
         elif self.is_a_single_digit(number):
             result += self.translate_single_digit(number)
-            
-        elif self.is_a_teen(number):
-            result += self.translate_teens(number)
-            
-        elif Helpers().number_of_digits(number) == 2:
-            result += self.translate_last_two_digits(number)
-            
-        elif Helpers().number_of_digits(number) == 3:
-            result += self.translate_three_digits(number)
- 
+
         return result
+
+    def get_segment(self, which_segment, number):
+        commas = Helpers().get_number_of_commas_in_number(number)
+        if commas == 0:
+            return number
+        number = (number / math.pow(1000, commas - which_segment)) % 1000
+        
+        return int(number)
+
+    def there_are_commas_remaining(self, number):
+        pass
+
+    def get_current_magnitude_suffix(self, number):
+        comma_replacements_with_context = {
+            0: "",
+            1: "thousand",
+            2: "million",
+            3: "billion",
+            4: "trillion",
+            5: "quadrillion"
+        }
+
+        commas = Helpers().get_number_of_commas_in_number(number)
+        return comma_replacements_with_context[commas]
     
     def is_a_single_digit(self, number):
         return number >= 0 and number < 10
@@ -52,6 +103,7 @@ class Translator:
     
     def translate_teens(self, number):
         result = ""
+        
         if number == 10:
             result = "ten"
         elif number == 11:
@@ -77,6 +129,11 @@ class Translator:
     def translate_last_two_digits(self, number):
         # number is in form: Yx
         result = ''
+
+        if self.is_a_teen(number):
+            result += self.translate_teens(number)
+            return result
+
         first_digit = int(number / 10) * 10
         result += self.translate_first_digit_of_two_digit_number(first_digit)
         
