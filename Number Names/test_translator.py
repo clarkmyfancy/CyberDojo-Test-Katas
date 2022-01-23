@@ -84,6 +84,10 @@ class TestTranslator(unittest.TestCase):
     def test_should_output_first_segment_responses(self):
         self.assertEqual("one million", Translator().translate(1000000))
         self.assertEqual("four hundred eighty seven billion", Translator().translate(487000000000))
+        self.assertEqual("four hundred eighty seven thousand two hundred thirty", Translator().translate(487230))
+        self.assertEqual("seven billion four hundred ninety nine thousand one hundred four", Translator().translate(7000499104))
+
+        
 
         
 
