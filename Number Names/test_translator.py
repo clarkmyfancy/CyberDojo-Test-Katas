@@ -3,7 +3,7 @@ import unittest
 
 
 class TestTranslator(unittest.TestCase):
-    
+
     def test_should_output_correct_names_for_digits_less_than_ten(self):
         expected_results = {
             0: "zero",
@@ -58,6 +58,33 @@ class TestTranslator(unittest.TestCase):
         }
         for key in expected_results:
             self.assertEqual(expected_results[key], Translator().translate(key))
+
+    def test_should_give_correct_comma_phrase_suffix(self):
+        suffixes = {
+            100: "",
+            1000: "thousand",
+            1000000: "million",
+            1000000000: "billion",
+            1000000000000: "trillion",
+            1000000000000000: "quadrillion"
+        }
+        for key in suffixes:
+            self.assertEqual(suffixes[key], Translator().get_current_magnitude_suffix(key))
+
+    def test_should_get_correct_segments(self):
+        # read in the form: 123,456,789
+        first = 0 # 123
+        self.assertEqual(123, Translator().get_segment(which_segment=first, number=123456))
+        self.assertEqual(324, Translator().get_segment(which_segment=first, number=324))
+
+        second = 1 # 456
+        self.assertEqual(456, Translator().get_segment(which_segment=second, number=123456))
+
+
+    def test_should_output_first_segment_responses(self):
+        self.assertEqual("one million", Translator().translate(1000000))
+        self.assertEqual("four hundred eighty seven billion", Translator().translate(487000000000))
+
         
 
 if __name__ == '__main__':
