@@ -93,8 +93,8 @@ class Translator:
         segment_was_all_zeros = True if current_segment == "" else False
         its_the_first_iteration = True if iteration == 0 else False
 
-        current_magnitude_suffix = self.get_current_magnitude_suffix(number)
-        no_magnitude_suffix__is_required = True if self.get_current_magnitude_suffix(number) == "" else False
+        current_magnitude_suffix = self.get_magnitude_suffix(number)
+        no_magnitude_suffix__is_required = True if self.get_magnitude_suffix(number) == "" else False
 
         segment = ""
         if its_the_first_iteration or segment_was_all_zeros:
@@ -108,7 +108,7 @@ class Translator:
             segment += " " + current_magnitude_suffix
         return segment
 
-    def get_current_magnitude_suffix(self, number):
+    def get_magnitude_suffix(self, number):
         comma_replacements_with_context = {
             0: "",
             1: "thousand",

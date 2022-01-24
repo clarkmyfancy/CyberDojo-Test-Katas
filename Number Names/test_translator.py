@@ -69,7 +69,7 @@ class TestTranslator(unittest.TestCase):
             1000000000000000: "quadrillion"
         }
         for key in suffixes:
-            self.assertEqual(suffixes[key], Translator().get_current_magnitude_suffix(key))
+            self.assertEqual(suffixes[key], Translator().get_magnitude_suffix(key))
 
     def test_should_get_correct_segments(self):
         # read in the form: 123,456,789
