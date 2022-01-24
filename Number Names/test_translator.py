@@ -53,8 +53,8 @@ class TestTranslator(unittest.TestCase):
     def test_should_translate_three_digit_numbers(self):
         expected_results = {
             400: "four hundred",
-            310: "three hundred ten",
-            999: "nine hundred ninety nine"
+            310: "three hundred and ten",
+            999: "nine hundred and ninety nine"
         }
         for key in expected_results:
             self.assertEqual(expected_results[key], Translator().translate(key))
@@ -83,9 +83,9 @@ class TestTranslator(unittest.TestCase):
 
     def test_should_output_first_segment_responses(self):
         self.assertEqual("one million", Translator().translate(1000000))
-        self.assertEqual("four hundred eighty seven billion", Translator().translate(487000000000))
-        self.assertEqual("four hundred eighty seven thousand two hundred thirty", Translator().translate(487230))
-        self.assertEqual("seven billion four hundred ninety nine thousand one hundred four", Translator().translate(7000499104))
+        self.assertEqual("four hundred and eighty seven billion", Translator().translate(487000000000))
+        self.assertEqual("four hundred and eighty seven thousand two hundred and thirty", Translator().translate(487230))
+        self.assertEqual("seven billion four hundred and ninety nine thousand one hundred and four", Translator().translate(7000499104))
 
         
 
